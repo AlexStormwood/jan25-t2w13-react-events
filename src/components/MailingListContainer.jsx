@@ -7,6 +7,7 @@
 
 import React from "react";
 import MailingListAlreadySignedUpMessage from "./MailingListAlreadySignUpMessage";
+import MailingListSignUpForm from "./MailingListSignUpForm";
 
 
 /* 
@@ -24,12 +25,39 @@ export default class MailingListContainer extends React.Component{
 		super();
 
 		this.state = {
-			userSignedUp: false
+			userSignedUp: false,
+			userEmail: ""
 		}
+
+		this.setUserEmail = this.setUserEmail.bind(this)
+		this.signUp = this.signUp.bind(this);
+	}
+
+	setUserEmail(newUserEmail) {
+		console.log(newUserEmail);
+		this.setState((previousState) => {
+			return {...previousState, userEmail: newUserEmail}
+		});
+	}
+
+	signUp(){
+		console.log("User has signed up with email of: " + this.state.userEmail);
+
+		// Imaginary API function call goes here
+		// send the user email to your backend
+		// wait for reponse
+		// if response says that the user has signed up successfully,
+		// then we update our state here with userSignedUp: true
+		// If an error occurred, sanitise and save the errors to state
+		// and pass them to the form for the form to show the errors 
+
+		this.setState((previousState) => {
+			return {...previousState, userSignedUp: true}
+		})
 	}
 
 	render(){
-		if (this.state.userSignedUp){
+		if (this.state.userSignedUp && this.state.userEmail){
 			return(
 				<div className="mailingListContainer">
 					<MailingListAlreadySignedUpMessage />
@@ -38,7 +66,11 @@ export default class MailingListContainer extends React.Component{
 		} else {
 			return(
 				<div className="mailingListContainer">
-					{/* Sign up form */}
+					<MailingListSignUpForm 
+						currentEmail={this.state.userEmail} 
+						updateEmail={this.setUserEmail} 
+						submitEmail={this.signUp}
+					/>
 				</div>
 			)
 		}
